@@ -1,0 +1,50 @@
+# -*-perl-*-
+
+# WARNING: `Config` is generated.
+#
+# Don't edit `Config` directly. Instead modify `Config.template` and run
+# `npm run generate-config`
+
+package.AWSCloud9Public = {
+    interfaces = (1.0);
+
+    deploy = {
+        generic = true;
+    };
+
+    build-environment = {
+        chroot = basic;
+        network-access = blocked;
+    };
+
+    build-system = npm-pretty-much;
+
+    build-tools = {
+        1.0 = {
+            NodeJS = default;
+            PhantomJS = 2.1.x; # for @c9/ide
+            Zip = 3.x; # for download_test.js
+            Unzip = 6.x; # for download_test.js
+            NpmPrettyMuch = 1.0;
+        };
+    };
+
+    dependencies = {
+        1.0 = {
+            # override engine.io and ws
+            AWSCloud9NodeJS-vfs-frozen-dependencies = 1.0;
+        };
+    };
+
+    test-dependencies = {
+        1.0 = {
+        };
+    };
+
+    runtime-dependencies = {
+        1.0 = {
+        };
+    };
+
+};
+

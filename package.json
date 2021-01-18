@@ -1,0 +1,36 @@
+{
+	"name": "@c9/extension-sdk",
+	"version": "5.0.0",
+	"files": [
+		"PUBLISH.md"
+	],
+	"devDependencies": {
+		"nyc": "12.0.x",
+		"lerna": "^3.15.0",
+		"node-pty": "^0.9.0"
+	},
+	"npm-pretty-much": {
+		"consumeLibCommonJs": true,
+		"ignoreCoverageData": true
+	},
+	"scripts": {
+		"link": "lerna link",
+		"pretest": "npm run build:vs-code && npm run build:packages",
+		"test": "npm run test:unit && npm run cov:report",
+		"test:unit": "lerna --ignore ace --ignore tern run --concurrency=1 --stream test",
+		"test:lint": "npm run link && lerna run --parallel test:lint",
+		"test:tslint": "lerna run --parallel test:tslint",
+		"test:prettier": "npm run link && lerna run --parallel test:prettier",
+		"build:packages": "lerna run --parallel build --ignore vscode-source",
+		"build:vs-code": "lerna run build --scope vscode-source",
+		"clean": "npm run clean:packages && npm run clean:local",
+		"clean:local": "rm -rf node_modules build/* .nyc_output",
+		"clean:packages": "lerna run --parallel clean && lerna clean --yes",
+		"fix": "lerna run fix",
+		"standalone": "cd packages/ide && npm run standalone",
+		"postinstall": "lerna bootstrap",
+		"post-npm-pretty-much": "npm run publish:packages",
+		"publish:packages": "for PKG in packages/*; do npm-pretty-much-release $PKG; done",
+		"cov:report": "rm -rf .cov; mkdir -p .cov; mv packages/*/.cov/* .cov; nyc report --temp-directory .cov --report-dir=build/brazil-documentation/coverage --reporter=html --reporter=cobertura npm run test && mv build/brazil-documentation/coverage/cobertura-coverage.xml build/brazil-documentation/coverage/coverage.xml"
+	}
+}
